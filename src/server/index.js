@@ -28,11 +28,11 @@ app.prepare().then(() => {
     })
   );
 
+  server.use(routes);
   server.get("*", (req, res) => {
     return handle(req, res);
   });
 
-  server.use(routes);
 
   server.listen(env.PORT, () => {
     console.log(`listening to port ${env.PORT}`);
