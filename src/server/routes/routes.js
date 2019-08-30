@@ -1,12 +1,7 @@
 const router = require("express").Router();
-import home from "../controllers/HomeController";
 import auth from "../controllers/AuthController";
 import user from "../controllers/UserController";
-import authUser from "../middlewares/authUser";
 import authJWT from "../middlewares/authJWT";
-
-//render view
-router.get("/", home.index);
 
 //API Route
 router.get("/api/v1");
@@ -14,10 +9,8 @@ router.get("/api/v1");
 router.post("/login", auth.login);
 
 //========= User =========
-router.get("/user", userRoute => {
-  userRoute.get("/me", authJWT, user.me);
-  userRoute.post("/", user.creatUser);
-});
+router.get("/me", authJWT, user.me);
+router.post("/user", user.creatUser);
 
 router.use((req, res, next) => {
   res.status(404).send({
