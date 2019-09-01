@@ -5,11 +5,16 @@ export default class Response {
     this.response = response;
   }
 
-  send(data) {
+  send(result) {
     this.response.status(this.statusCode).send({
-      data,
+      message: this.message,
       statusCode: this.statusCode,
-      message: this.message
+      result
     });
+  }
+
+  setMessage(msg) {
+    this.message = msg;
+    return this;
   }
 }

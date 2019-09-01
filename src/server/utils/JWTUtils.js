@@ -5,7 +5,9 @@ const jwtSecret = env.JWT_SECRET;
 
 export default class JWTUtils {
   static sign(payload) {
-    return jwt.sign(`${payload}`, jwtSecret);
+    return jwt.sign(payload, jwtSecret, {
+      expiresIn: "1h"
+    });
   }
 
   static extractPayload(token) {

@@ -1,22 +1,21 @@
 import JWTUtils from "../utils/JWTUtils";
 import UserModel from "../models/user";
+import UnauthorizedAcess from "../Response/UnauthorizedAcess";
 
 module.exports = (req, res, next) => {
   const authurization = req.header("authorization");
   const [authType, token] = authurization ? authurization.split(" ") : [];
 
   if (authType === "Bearer" && token) {
+    let userId = undefined;
     try {
-      const userId = JWTUtils.extractPayload(token);
-
-      Object.assign(req.body, { userId });
-      req.user = UserModel.findById(userId);
-      next();
-      return;
+      userId = JWTUtils.extractPayload(token).userId;
     } catch (error) {
-      console.log(error);
+      return new UnauthorizedAcess(res).setMessage("Invalid token").send();
     }
+    Object.assign(req.body, { userId });
+    req.user = UserModel.find({ _id: userId, accessToken: token });
+    return next();
   }
-
-  res.status(401).send({ status: false, message: "Not Authorized" });
+  return new UnauthorizedAcess(res).send();
 };

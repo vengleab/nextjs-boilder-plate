@@ -3,31 +3,29 @@ const userModel = require("../models/user");
 const bcrypt = require("bcrypt");
 
 import JWTUtils from "../utils/JWTUtils";
+import Success from "../Response/Success";
+import UnauthorizedAcess from "../Response/UnauthorizedAcess";
+import BadRequest from "../Response/BadRequest";
 module.exports = {
   async login(req, res) {
     try {
       const { email, password } = req.body;
+
       if (email && password) {
-        // const user = users.find(user => user.email === email && user.password === password);
         const user = await userModel.findOne({ email });
-        const isPasswordCorrect = bcrypt.compareSync(password, user.password);
-        if (user && isPasswordCorrect) {
-          res.send({
-            status: true,
-            token: JWTUtils.sign(user._id),
-            message: "Login successfully"
-          });
-        } else {
-          res.status(401).send({
-            status: false,
-            message: "Email or Password is incorrect"
-          });
+        if (!user || !bcrypt.compareSync(password, user.password)) {
+          return new UnauthorizedAcess(res).setMessage(
+            "Email or Password is incorrect"
+          );
         }
+        return new Success(res)
+          .setMessage("Login successfully")
+          .send({ token: JWTUtils.sign({ userId: user._id }) });
+      } else {
+        return new BadRequest(res).send();
       }
     } catch (error) {
-      console.log(error);
-
-      res.status(400).send(error);
+      return new BadRequest(res).setMessage(error.message).send();
     }
   }
 };

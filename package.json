@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "NODE_ENV=production node -r dotenv/config ./node_modules/@babel/node/bin/babel-node src/server/index.js",
     "lint": "node_modules/.bin/esw --ignore-path .eslintignore . --fix",
-    "dev": "node -r dotenv/config ./node_modules/@babel/node/bin/babel-node src/server/index.js"
+    "dev": "nodemon -r dotenv/config ./node_modules/@babel/node/bin/babel-node src/server/index.js",
+    "dev:server": "DEV_SERVER=true nodemon -r dotenv/config ./node_modules/@babel/node/bin/babel-node src/server/index.js"
   },
   "author": "",
   "license": "ISC",
@@ -32,8 +33,10 @@
   "devDependencies": {
     "babel-eslint": "^10.0.3",
     "eslint": "^6.2.2",
+    "eslint-config-prettier": "^6.1.0",
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.14.3",
+    "eslint-watch": "^6.0.0",
     "prettier": "^1.18.2"
   }
 }

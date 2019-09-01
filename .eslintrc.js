@@ -12,6 +12,7 @@ module.exports = {
     "plugin:prettier/recommended"
   ],
   rules: {
+    "consistent-return": 2,
     "no-console": 1,
     "react/display-name": 0,
     // no need this as we will soon use typescript

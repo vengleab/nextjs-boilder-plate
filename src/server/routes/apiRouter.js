@@ -1,11 +1,13 @@
 const apiRouter = require("express").Router();
-import user from "../controllers/UserController";
+import userController from "../controllers/userController";
 import authJWT from "../middlewares/authJWT";
 import NotFound from "../Response/NotFound";
 import InternalServerError from "../Response/InternalServerError";
-//========= User =========
-apiRouter.get("/me", authJWT, user.me);
-apiRouter.post("/user", user.creatUser);
+import auhtController from "../controllers/authController";
+
+apiRouter.get("/me", authJWT, userController.me);
+apiRouter.post("/user", userController.creatUser);
+apiRouter.post("/login", auhtController.login);
 
 // ========= Override status for api =====
 // eslint-disable-next-line no-unused-vars
